@@ -1,0 +1,101 @@
+.gameContainer {
+    text-align: center;
+    padding: 20px;
+}
+
+.characterDisplay {
+    margin-bottom: 10px;
+}
+
+.characterName {
+    font-size: 20px;
+    color: #333;
+    margin-top: 5px;
+}
+
+.instructions {
+    margin-top: 20px;
+    font-size: 18px;
+    color: #333;
+    text-align: center;
+}
+
+.displayArea {
+    width: 200px;
+    height: 200px;
+    margin: 0 auto;
+    position: relative;
+    margin: 20px auto;
+    background-color: #f0f0f0; /* 軽い背景色 */
+    border: 2px dashed #ccc; /* 点線の境界 */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.excretion {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 20px;
+    height: 20px;
+    background-color: brown;
+    border-radius: 10px;
+    animation: drop 1.5s forwards ease-in;
+}
+
+.long-excretion {
+    width: 20px; /* 長い排泄物の幅 */
+    height: 60px; /* 長い排泄物の高さ */
+    animation: drop-long 2s forwards ease-in;
+}
+
+
+@keyframes drop {
+    0% {
+        top: 0;
+        opacity: 1;
+        width: 20px;
+        height: 20px;
+        border-radius: 40%;
+    }
+    95% {
+        top: 95%; /* 地面にほぼ到達 */
+        width: 20px; /* まだ丸い形状 */
+        height: 20px;
+        border-radius: 40%;
+    }
+    100% {
+        top: 100%; /* 地面に到達 */
+        opacity: 1;
+        width: 40px; /* 広がる */
+        height: 5px; /* 平べったくなる */
+        border-radius: 50%;
+    }
+}
+
+@keyframes drop-long {
+    0% {
+        top: 0;
+        width: 20px;
+        height: 60px;
+        opacity: 1;
+        border-radius: 40%;
+    }
+    90% {
+        top: 80%; /* 地面にほぼ到達 */
+        width: 20px; /* まだ丸い形状 */
+        height: 60px;
+        border-radius: 40%;
+    }
+    100% {
+        top: 100%;
+        opacity: 1;
+        width: 60px; /* 地面に広がる */
+        height: 15px; /* 平べったくなる */
+        border-radius: 50%;
+    }
+}
+
