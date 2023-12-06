@@ -8,8 +8,11 @@ const GamePage = () => {
     const { query } = router;
     const [selectedCharacter, setSelectedCharacter] = useState('');
     const displayAreaRef = useRef(null);
+    // オーディオ要素への参照を作成
+    const audioRef = useRef(null);
 
     useEffect(() => {
+        audioRef.current = new Audio('onara_002.mp3');
         if (query.character) {
             setSelectedCharacter(query.character);
         }
@@ -40,11 +43,11 @@ const GamePage = () => {
             recognition.interimResults = false;
             recognition.continuous = true;
 
+
             recognition.addEventListener('result', e => {
-                const transcript = Array.from(e.results)
-                    .map(result => result[0])
-                    .map(result => result.transcript)
-                    .join('');
+                // 最新の認識結果のみを取得
+                const latestResult = e.results[e.results.length - 1];
+                const transcript = latestResult[0].transcript;
     
                 console.log('認識された言葉:', transcript);
     
@@ -63,12 +66,21 @@ const GamePage = () => {
         } else {
             console.log('SpeechRecognition APIはこのブラウザではサポートされていません。');
         }
-    }, [selectedCharacter]);
+    }, [selectedCharacter, query.character]);
 
     const displayExcretion = (character, isLong) => {
         const excretionDiv = document.createElement('div');
         excretionDiv.className = isLong ? `${styles.excretion} ${styles.longExcretion}` : styles.excretion;
         displayAreaRef.current.appendChild(excretionDiv);
+
+        // オーディオが再生中であれば、最初から再生する
+        if (!audioRef.current.paused) {
+            audioRef.current.pause();
+            audioRef.current.currentTime = 0;
+        }
+        // 音量を30%に設定
+        audioRef.current.volume = 0.3;
+        audioRef.current.play();
     };
 
     return (
@@ -80,7 +92,7 @@ const GamePage = () => {
                         alt={selectedCharacter}
                         width={150} // 適切なサイズに調整
                         height={150}
-                        layout="fixed"
+                        priority
                     />
                     <p className={styles.characterName}>{selectedCharacter}</p>
                 </div>
